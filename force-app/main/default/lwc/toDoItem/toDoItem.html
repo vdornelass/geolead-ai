@@ -1,0 +1,135 @@
+<template>
+    <li class={containerClass}>
+        <!-- MODO DE EDIÇÃO -->
+        <template lwc:if={isEditing}>
+            <div class="slds-p-around_small slds-size_1-of-1 edit-container">
+                <div class="slds-grid slds-wrap slds-gutters_x-small slds-grid_vertical-align-center">
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_6-of-12 slds-m-bottom_x-small">
+                        <lightning-input 
+                            type="text" 
+                            label="Título" 
+                            variant="label-hidden" 
+                            value={editTitle}
+                            onchange={handleTitleChange} 
+                            placeholder="Título da tarefa..."
+                            required>
+                        </lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-medium-size_3-of-12 slds-m-bottom_x-small">
+                        <lightning-combobox
+                            name="priority"
+                            label="Prioridade"
+                            variant="label-hidden"
+                            value={editPriority}
+                            placeholder="Prioridade"
+                            options={priorityOptions}
+                            onchange={handlePriorityChange}>
+                        </lightning-combobox>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-medium-size_3-of-12 slds-m-bottom_x-small">
+                        <lightning-input 
+                            type="date" 
+                            label="Data" 
+                            variant="label-hidden" 
+                            value={editDueDate}
+                            onchange={handleDueDateChange}>
+                        </lightning-input>
+                    </div>
+                </div>
+                <div class="slds-grid slds-grid_align-end slds-m-top_xx-small slds-gutters_x-small">
+                    <div class="slds-col">
+                        <lightning-button 
+                            label="Cancelar" 
+                            variant="neutral" 
+                            size="small"
+                            onclick={handleCancelEdit}>
+                        </lightning-button>
+                    </div>
+                    <div class="slds-col">
+                        <lightning-button 
+                            label="Salvar" 
+                            variant="brand" 
+                            size="small"
+                            icon-name="utility:check"
+                            onclick={handleSaveEdit}>
+                        </lightning-button>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!-- MODO DE VISUALIZAÇÃO PADRÃO -->
+        <template lwc:else>
+            <div class="slds-grid slds-grid_vertical-align-center slds-p-around_small slds-size_1-of-1 task-row">
+                <!-- Checkbox de Conclusão -->
+                <div class="slds-col slds-grow-none slds-m-right_small">
+                    <lightning-input 
+                        type="checkbox" 
+                        variant="label-hidden" 
+                        label="Marcar como concluída"
+                        checked={task.Is_Completed__c} 
+                        onchange={handleCheckboxChange}>
+                    </lightning-input>
+                </div>
+
+                <!-- Detalhes da Tarefa -->
+                <div class="slds-col slds-has-flexi-truncate task-body">
+                    <div class="task-title-wrapper">
+                        <span class={titleClass} title={task.Title__c}>
+                            {task.Title__c}
+                        </span>
+                    </div>
+
+                    <!-- Metadados: Prioridade e Prazo -->
+                    <div class="slds-grid slds-wrap slds-grid_vertical-align-center slds-m-top_xx-small task-meta">
+                        <!-- Badge de Prioridade -->
+                        <span class={priorityBadgeClass}>
+                            {task.Priority__c}
+                        </span>
+
+                        <!-- Data de Vencimento -->
+                        <template lwc:if={task.Due_Date__c}>
+                            <span class={dueDateClass} title="Data de vencimento">
+                                <lightning-icon 
+                                    icon-name={dueDateIcon} 
+                                    size="xx-small" 
+                                    class="slds-m-right_xx-small"
+                                    variant={dueDateIconVariant}>
+                                </lightning-icon>
+                                {formattedDueDate}
+                            </span>
+                        </template>
+
+                        <!-- Indicador de Vencida -->
+                        <template lwc:if={isOverdue}>
+                            <span class="slds-badge slds-theme_error slds-m-left_xx-small overdue-badge">
+                                Atrasada
+                            </span>
+                        </template>
+                    </div>
+                </div>
+
+                <!-- Ações da Linha -->
+                <div class="slds-col slds-grow-none slds-m-left_small task-actions">
+                    <lightning-button-icon 
+                        icon-name="utility:edit" 
+                        alternative-text="Editar Tarefa" 
+                        title="Editar"
+                        size="small" 
+                        variant="border-filled"
+                        onclick={handleStartEdit}
+                        class="slds-m-right_xx-small">
+                    </lightning-button-icon>
+                    <lightning-button-icon 
+                        icon-name="utility:delete" 
+                        alternative-text="Excluir Tarefa" 
+                        title="Excluir"
+                        size="small" 
+                        variant="border-filled"
+                        onclick={handleDelete}>
+                    </lightning-button-icon>
+                </div>
+            </div>
+        </template>
+    </li>
+</template>

@@ -1,0 +1,64 @@
+.todo-main-card {
+    display: block;
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.metric-box {
+    border-radius: 8px;
+    border: 1px solid #e0e5ea;
+    background: #f8fafc;
+}
+
+.metric-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 70px;
+}
+
+.metric-number {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #080707;
+    margin-top: 2px;
+}
+
+.metric-divider {
+    width: 1px;
+    height: 32px;
+    background-color: #cbd5e1;
+}
+
+.add-task-card {
+    border: 1px dashed #0176d3;
+    border-radius: 8px;
+    background: #fdfefe;
+}
+
+.form-header {
+    display: flex;
+    align-items: center;
+    color: #0176d3;
+    font-weight: 700;
+}
+
+.search-filter-row {
+    row-gap: 0.75rem;
+}
+
+.task-list-container {
+    padding: 0;
+    margin: 0;
+}
+
+.empty-state-box {
+    border: 1px dashed #d8dde6;
+    border-radius: 8px;
+    background: #fafbfc;
+}
+
+.empty-icon {
+    --sds-c-icon-color-foreground-default: #94a3b8;
+}

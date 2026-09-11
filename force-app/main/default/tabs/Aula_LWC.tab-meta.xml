@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Aba da Aula LWC de Contas e Contatos Hierárquicos.</description>
+    <label>Aula LWC</label>
+    <lwcComponent>accountContactCardView</lwcComponent>
+    <motif>Custom58: Cadence</motif>
+</CustomTab>

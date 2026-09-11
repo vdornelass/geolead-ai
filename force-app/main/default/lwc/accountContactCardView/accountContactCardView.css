@@ -1,0 +1,420 @@
+:host {
+    display: block;
+    --brand-blue: #0176d3;
+    --brand-dark: #005fb2;
+    --brand-light: #eef4ff;
+    --text-primary: #181818;
+    --text-secondary: #5c5c5c;
+    --border-subtle: #e5e7eb;
+    --card-bg: #ffffff;
+}
+
+.app-container {
+    max-width: 600px;
+    margin: 0 auto;
+    background: #f8fafc;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    min-height: 100vh;
+    padding-bottom: 90px;
+    position: relative;
+}
+
+/* Top Nav */
+.nav-subhead {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--brand-blue);
+    letter-spacing: 0.5px;
+}
+
+.nav-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* Main Banner Card */
+.header-card {
+    background: #ffffff;
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+}
+
+.badge-caps {
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--brand-blue);
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+}
+
+.main-heading {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+    line-height: 1.2;
+}
+
+/* Metric Pills */
+.metrics-row {
+    margin-top: 8px;
+    gap: 6px;
+}
+
+.metric-pill {
+    display: inline-flex;
+    align-items: center;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 9999px;
+    padding: 3px 10px;
+    font-size: 11px;
+    color: #334155;
+}
+
+.vip-pill {
+    background: #fffbeb;
+    border-color: #fef3c7;
+    color: #b45309;
+}
+
+.online-pill {
+    background: #f0fdf4;
+    border-color: #dcfce7;
+    color: #166534;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+    background-color: #22c55e;
+    border-radius: 50%;
+    margin-right: 5px;
+    display: inline-block;
+}
+
+/* Search Input */
+.custom-search-input {
+    border-radius: 10px;
+    border: 1px solid #cbd5e1;
+    padding: 8px 12px 8px 36px;
+    font-size: 13px;
+    background-color: #ffffff;
+    transition: all 0.2s ease;
+}
+
+.custom-search-input:focus {
+    border-color: var(--brand-blue);
+    box-shadow: 0 0 0 2px rgba(1, 118, 211, 0.15);
+}
+
+/* Filter Chips */
+.filter-chips-wrapper {
+    display: flex;
+    overflow-x: auto;
+    gap: 8px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-bottom: 2px;
+}
+
+.filter-chips-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.filter-chip {
+    flex-shrink: 0;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #475569;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.filter-chip:hover {
+    background: #f8fafc;
+    border-color: #94a3b8;
+}
+
+.filter-chip.active-chip {
+    background: var(--brand-blue);
+    border-color: var(--brand-blue);
+    color: #ffffff;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(1, 118, 211, 0.25);
+}
+
+/* Actions Bar */
+.actions-bar {
+    padding: 0 4px;
+}
+
+.link-button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+}
+
+.link-button:hover {
+    color: var(--brand-blue);
+}
+
+.text-separator {
+    color: #cbd5e1;
+}
+
+/* Account Cards */
+.account-card {
+    background: #ffffff;
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+    padding: 12px;
+}
+
+.account-card:hover {
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+    border-color: #cbd5e1;
+}
+
+.chevron-btn {
+    background: #f1f5f9;
+    border: none;
+    border-radius: 6px;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.15s;
+}
+
+.chevron-btn:hover {
+    background: #e2e8f0;
+}
+
+.acc-icon-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.acc-name-link {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: color 0.15s;
+    line-height: 1.2;
+}
+
+.acc-name-link:hover {
+    color: var(--brand-blue);
+    text-decoration: underline;
+}
+
+.star-vip {
+    color: #f59e0b;
+    font-size: 13px;
+}
+
+.acc-subtitle {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+}
+
+/* Status Badges */
+.status-badge {
+    display: inline-block;
+    border-radius: 12px;
+    padding: 2px 8px;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.status-success {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.status-vip {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.status-warning {
+    background: #f3f4f6;
+    color: #4b5563;
+}
+
+/* Phone Bar */
+.phone-bar {
+    background: #f8fafc;
+    border: 1px solid #f1f5f9;
+    border-radius: 8px;
+    margin-top: 8px;
+}
+
+.phone-link {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--brand-blue);
+    text-decoration: none;
+}
+
+.phone-link:hover {
+    text-decoration: underline;
+}
+
+.action-circle-btn {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #e0f2fe;
+    color: #0284c7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: background-color 0.15s;
+}
+
+.action-circle-btn:hover {
+    background: #bae6fd;
+}
+
+/* Contacts Section */
+.contacts-section {
+    border-top: 1px solid #f1f5f9;
+}
+
+.contacts-header-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: #64748b;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.add-contact-btn {
+    background: transparent;
+    border: none;
+    color: var(--brand-blue);
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+}
+
+.add-contact-btn:hover {
+    text-decoration: underline;
+}
+
+.contact-item {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 6px 10px;
+}
+
+.contact-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    background: #bfdbfe;
+    color: #1e40af;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.contact-name-link {
+    font-size: 12px;
+    font-weight: 600;
+    color: #1e293b;
+    text-decoration: none;
+}
+
+.contact-name-link:hover {
+    color: var(--brand-blue);
+    text-decoration: underline;
+}
+
+.role-badge {
+    font-size: 9px;
+    font-weight: 600;
+    padding: 1px 6px;
+    border-radius: 8px;
+    background: #e0e7ff;
+    color: #4338ca;
+}
+
+.contact-meta {
+    font-size: 10px;
+    color: #64748b;
+    margin-top: 1px;
+}
+
+.mail-btn {
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    background: #f1f5f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #475569;
+    text-decoration: none;
+    transition: all 0.15s;
+}
+
+.mail-btn:hover {
+    background: #e2e8f0;
+    color: var(--brand-blue);
+}
+
+/* Floating Action Button */
+.fab-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 99;
+}
+
+.fab-button {
+    background: var(--brand-blue);
+    color: #ffffff;
+    border: none;
+    border-radius: 24px;
+    padding: 10px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 4px 14px rgba(1, 118, 211, 0.4);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.fab-button:hover {
+    background: var(--brand-dark);
+    transform: translateY(-2px);
+}

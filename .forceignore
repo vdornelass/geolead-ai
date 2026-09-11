@@ -1,0 +1,8 @@
+# List of files and directories to ignore when pushing or pulling metadata
+package.xml
+**/.git
+**/.svn
+**/.DS_Store
+**/.vscode
+**/.sf
+**/.sfdx

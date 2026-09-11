@@ -1,0 +1,320 @@
+<template>
+    <div class="app-container slds-p-horizontal_x-small slds-p-vertical_small">
+
+        <!-- Top Header Bar -->
+        <div class="top-nav slds-grid slds-grid_align-spread slds-grid_vertical-align-center slds-p-bottom_small">
+            <div class="slds-media slds-media_center">
+                <div class="slds-media__figure">
+                    <lightning-icon icon-name="standard:sales_cadence" size="small" alternative-text="Salesforce"></lightning-icon>
+                </div>
+                <div class="slds-media__body">
+                    <div class="nav-subhead">SALESFORCE SLDS</div>
+                    <div class="nav-title">Contas &amp; Relacionamentos</div>
+                </div>
+            </div>
+            <div class="slds-grid slds-grid_vertical-align-center">
+                <lightning-button-icon icon-name="utility:refresh" variant="border-filled" size="small" alternative-text="Sincronizar" onclick={handleRefresh} class="slds-m-right_xx-small"></lightning-button-icon>
+                <lightning-button-icon icon-name="utility:notification" variant="border-filled" size="small" alternative-text="Notificações" class="slds-m-right_xx-small"></lightning-button-icon>
+                <lightning-icon icon-name="standard:avatar" size="small" alternative-text="Usuário"></lightning-icon>
+            </div>
+        </div>
+
+        <!-- Main Banner Card -->
+        <div class="header-card slds-box slds-box_small slds-m-bottom_small">
+            <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center slds-m-bottom_x-small">
+                <div class="slds-media slds-media_center">
+                    <div class="slds-media__figure">
+                        <span class="slds-avatar slds-avatar_profile-image-large avatar-brand">
+                            <lightning-icon icon-name="standard:account" size="medium" alternative-text="Contas"></lightning-icon>
+                        </span>
+                    </div>
+                    <div class="slds-media__body">
+                        <div class="badge-caps">LIGHTNING WEB COMPONENT</div>
+                        <h1 class="main-heading">Contas &amp; Contatos Hierárquicos</h1>
+                    </div>
+                </div>
+                <lightning-button-icon icon-name="utility:sync" variant="border-filled" size="medium" alternative-text="Atualizar" onclick={handleRefresh}></lightning-button-icon>
+            </div>
+
+            <!-- Metric Pills Row -->
+            <div class="metrics-row slds-grid slds-wrap slds-grid_vertical-align-center">
+                <div class="metric-pill slds-m-right_x-small slds-m-bottom_xx-small">
+                    <lightning-icon icon-name="utility:folder" size="xx-small" class="slds-m-right_xx-small"></lightning-icon>
+                    <span><strong>{totalAccounts}</strong> Contas</span>
+                </div>
+                <div class="metric-pill slds-m-right_x-small slds-m-bottom_xx-small">
+                    <lightning-icon icon-name="utility:people" size="xx-small" class="slds-m-right_xx-small"></lightning-icon>
+                    <span><strong>{totalContacts}</strong> Contatos</span>
+                </div>
+                <div class="metric-pill slds-m-right_x-small slds-m-bottom_xx-small vip-pill">
+                    <lightning-icon icon-name="utility:favorite" size="xx-small" class="slds-m-right_xx-small"></lightning-icon>
+                    <span><strong>{totalVips}</strong> VIP</span>
+                </div>
+                <div class="metric-pill slds-m-bottom_xx-small online-pill">
+                    <span class="status-dot"></span>
+                    <span>Online</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="search-section slds-m-bottom_small">
+            <div class="slds-form-element">
+                <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left-right">
+                    <lightning-icon icon-name="utility:search" size="x-small" class="slds-icon slds-input__icon slds-input__icon_left"></lightning-icon>
+                    <input type="text"
+                           class="slds-input custom-search-input"
+                           placeholder="Buscar contas, contatos, telefones..."
+                           value={searchTerm}
+                           oninput={handleSearchChange} />
+                    <template lwc:if={searchTerm}>
+                        <lightning-button-icon icon-name="utility:clear" variant="bare" size="x-small" alternative-text="Limpar" onclick={handleClearSearch} class="slds-input__icon slds-input__icon_right"></lightning-button-icon>
+                    </template>
+                </div>
+            </div>
+            <div class="search-status-bar slds-grid slds-grid_align-spread slds-p-top_xx-small slds-text-color_weak slds-text-body_small">
+                <span>Exibindo <strong>{displayedCount}</strong> de <strong>{totalAccounts}</strong> contas principais</span>
+                <span class="slds-grid slds-grid_vertical-align-center">
+                    <lightning-icon icon-name="utility:cloud" size="xx-small" class="slds-m-right_xxx-small" variant="success"></lightning-icon>
+                    Sincronizado
+                </span>
+            </div>
+        </div>
+
+        <!-- Filter Chips (Horizontal Scrollable) -->
+        <div class="filter-chips-wrapper slds-m-bottom_small">
+            <button class={chipAllClass} onclick={handleFilterAll}>
+                <template lwc:if={isFilterAll}>✓ </template>Todos
+            </button>
+            <button class={chipWithContactsClass} onclick={handleFilterWithContacts}>
+                Com Contatos ({accountsWithContactsCount})
+            </button>
+            <button class={chipTechClass} onclick={handleFilterTech}>
+                Tecnologia
+            </button>
+            <button class={chipVipClass} onclick={handleFilterVip}>
+                ★ VIP / Chave
+            </button>
+        </div>
+
+        <!-- Action & Ordering Bar -->
+        <div class="actions-bar slds-grid slds-grid_align-spread slds-grid_vertical-align-center slds-m-bottom_small slds-text-body_small">
+            <div class="slds-grid slds-grid_vertical-align-center">
+                <button class="link-button slds-text-color_default" onclick={handleToggleExpandAll}>
+                    <lightning-icon icon-name="utility:expand_alt" size="xx-small" class="slds-m-right_xxx-small"></lightning-icon>
+                    {expandAllLabel}
+                </button>
+                <span class="slds-m-horizontal_x-small text-separator">•</span>
+                <span class="slds-text-color_weak">{displayedCount} contas listadas</span>
+            </div>
+            <div class="slds-grid slds-grid_vertical-align-center">
+                <button class="link-button slds-text-color_weak" onclick={handleToggleSort}>
+                    Ordenar: <strong>{sortLabel}</strong> ⚏
+                </button>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <template lwc:if={isLoading}>
+            <div class="slds-p-around_large slds-text-align_center">
+                <lightning-spinner alternative-text="Carregando contas..." size="medium"></lightning-spinner>
+            </div>
+        </template>
+
+        <!-- Empty State -->
+        <template lwc:if={isListEmpty}>
+            <div class="slds-box slds-theme_default slds-text-align_center slds-p-around_large slds-m-top_small empty-state-box">
+                <lightning-icon icon-name="utility:search" size="large" variant="warning" class="slds-m-bottom_small"></lightning-icon>
+                <h3 class="slds-text-heading_small slds-m-bottom_xx-small">Nenhuma conta encontrada</h3>
+                <p class="slds-text-color_weak slds-m-bottom_medium">Tente ajustar o termo de busca ou limpar os filtros ativos.</p>
+                <lightning-button label="Limpar Filtros" variant="neutral" onclick={handleClearFilters}></lightning-button>
+            </div>
+        </template>
+
+        <!-- Account Cards List -->
+        <div class="cards-list">
+            <template for:each={filteredAccounts} for:item="acc">
+                <div key={acc.id} class="account-card slds-box slds-m-bottom_small">
+                    
+                    <!-- Card Top Header -->
+                    <div class="slds-grid slds-grid_vertical-align-center slds-grid_align-spread">
+                        <div class="slds-grid slds-grid_vertical-align-center acc-main-info">
+                            <!-- Expand/Collapse Chevron Button -->
+                            <button class="chevron-btn slds-m-right_x-small" onclick={handleToggleCard} data-id={acc.id} aria-label="Expandir ou recolher">
+                                <lightning-icon icon-name={acc.chevronIcon} size="x-small"></lightning-icon>
+                            </button>
+
+                            <!-- Industry Icon Badge -->
+                            <div class="acc-icon-badge slds-m-right_small">
+                                <lightning-icon icon-name={acc.iconName} size="small"></lightning-icon>
+                            </div>
+
+                            <!-- Account Name & Location -->
+                            <div>
+                                <div class="slds-grid slds-grid_vertical-align-center">
+                                    <a href="javascript:void(0);" class="acc-name-link" onclick={handleNavigateToAccount} data-id={acc.id} title={acc.name}>
+                                        {acc.name}
+                                    </a>
+                                    <template lwc:if={acc.isVip}>
+                                        <span class="star-vip slds-m-left_xx-small" title="Cliente Chave">★</span>
+                                    </template>
+                                </div>
+                                <div class="acc-subtitle">
+                                    {acc.industry} • {acc.location}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Status Badge (Ativa, Cliente Chave, Em Prospecção) -->
+                        <div>
+                            <span class={acc.statusBadgeClass}>{acc.statusLabel}</span>
+                        </div>
+                    </div>
+
+                    <!-- Phone Bar & Actions -->
+                    <div class="phone-bar slds-grid slds-grid_align-spread slds-grid_vertical-align-center slds-m-top_x-small slds-p-around_xx-small">
+                        <div class="slds-grid slds-grid_vertical-align-center phone-wrapper">
+                            <lightning-icon icon-name="utility:call" size="x-small" class="slds-m-right_xx-small text-brand"></lightning-icon>
+                            <template lwc:if={acc.hasPhone}>
+                                <a href={acc.phoneCallUrl} class="phone-link">{acc.phone}</a>
+                            </template>
+                            <template lwc:else>
+                                <span class="slds-text-color_weak">Sem telefone</span>
+                            </template>
+                        </div>
+                        <div class="slds-grid slds-grid_vertical-align-center">
+                            <template lwc:if={acc.hasPhone}>
+                                <a href={acc.phoneCallUrl} class="action-circle-btn slds-m-right_xx-small" title="Ligar">
+                                    <lightning-icon icon-name="utility:incoming_call" size="xx-small"></lightning-icon>
+                                </a>
+                            </template>
+                            <lightning-button-menu alternative-text="Mais opções" menu-alignment="right" variant="border-filled" icon-size="x-small">
+                                <lightning-menu-item value="view" label="Ver Detalhes" onclick={handleNavigateToAccount} data-id={acc.id}></lightning-menu-item>
+                                <lightning-menu-item value="new_contact" label="Adicionar Contato" onclick={handleOpenAddContactModal} data-id={acc.id} data-name={acc.name}></lightning-menu-item>
+                            </lightning-button-menu>
+                        </div>
+                    </div>
+
+                    <!-- Collapsible Section: Contacts List -->
+                    <template lwc:if={acc.isExpanded}>
+                        <div class="contacts-section slds-m-top_small slds-border_top slds-p-top_x-small">
+                            <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center slds-m-bottom_x-small">
+                                <span class="contacts-header-label">
+                                    {acc.contactHeaderLabel}
+                                </span>
+                                <button class="add-contact-btn" onclick={handleOpenAddContactModal} data-id={acc.id} data-name={acc.name}>
+                                    + Adicionar
+                                </button>
+                            </div>
+
+                            <!-- Contacts Items -->
+                            <template lwc:if={acc.contacts.length}>
+                                <div class="contacts-list">
+                                    <template for:each={acc.contacts} for:item="con">
+                                        <div key={con.id} class="contact-item slds-box slds-box_x-small slds-m-bottom_xx-small slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                                            <div class="slds-media slds-media_center">
+                                                <div class="slds-media__figure">
+                                                    <span class="contact-avatar">{con.initials}</span>
+                                                </div>
+                                                <div class="slds-media__body">
+                                                    <div class="slds-grid slds-grid_vertical-align-center">
+                                                        <a href="javascript:void(0);" class="contact-name-link" onclick={handleNavigateToContact} data-id={con.id}>
+                                                            {con.name}
+                                                        </a>
+                                                        <template lwc:if={con.roleBadge}>
+                                                            <span class="role-badge slds-m-left_xx-small">{con.roleBadge}</span>
+                                                        </template>
+                                                    </div>
+                                                    <div class="contact-meta">
+                                                        {con.title} • {con.phone}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <template lwc:if={con.hasEmail}>
+                                                    <a href={con.emailMailtoUrl} class="mail-btn" title={con.email}>
+                                                        <lightning-icon icon-name="utility:email" size="xx-small"></lightning-icon>
+                                                    </a>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+                            <template lwc:else>
+                                <div class="no-contacts-note slds-p-around_x-small slds-text-align_center slds-text-color_weak">
+                                    Nenhum contato cadastrado ainda. Clique em <strong>+ Adicionar</strong> acima para criar o primeiro.
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+
+                </div>
+            </template>
+        </div>
+
+        <!-- Bottom Floating / Sticky Button -->
+        <div class="fab-container">
+            <button class="fab-button" onclick={handleCreateAccount}>
+                <lightning-icon icon-name="utility:new" size="x-small" variant="inverse" class="slds-m-right_xx-small"></lightning-icon>
+                Nova Conta
+            </button>
+        </div>
+
+        <!-- Modal: Adicionar Novo Contato -->
+        <template lwc:if={isModalOpen}>
+            <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_small">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <lightning-button-icon icon-name="utility:close" alternative-text="Fechar" variant="bare-inverse" class="slds-modal__close" onclick={handleCloseModal}></lightning-button-icon>
+                        <h2 class="slds-modal__title slds-hyphenate">Novo Contato para {selectedAccountName}</h2>
+                        <p class="slds-m-top_x-small slds-text-color_weak">Preencha as informações para vincular o contato diretamente a esta conta.</p>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium">
+                        <lightning-record-edit-form
+                            object-api-name="Contact"
+                            onsuccess={handleContactCreated}
+                            onerror={handleContactError}>
+                            <lightning-messages></lightning-messages>
+                            
+                            <!-- Hidden or disabled AccountId field -->
+                            <lightning-input-field field-name="AccountId" value={selectedAccountId} class="slds-hide"></lightning-input-field>
+
+                            <div class="slds-grid slds-gutters">
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-input-field field-name="FirstName"></lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-input-field field-name="LastName" required></lightning-input-field>
+                                </div>
+                            </div>
+                            <div class="slds-grid slds-gutters">
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-input-field field-name="Title"></lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-input-field field-name="Email"></lightning-input-field>
+                                </div>
+                            </div>
+                            <div class="slds-grid slds-gutters">
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-input-field field-name="Phone"></lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-input-field field-name="Department"></lightning-input-field>
+                                </div>
+                            </div>
+
+                            <div class="slds-m-top_medium slds-text-align_right">
+                                <lightning-button variant="neutral" label="Cancelar" onclick={handleCloseModal} class="slds-m-right_x-small"></lightning-button>
+                                <lightning-button variant="brand" type="submit" label="Salvar Contato"></lightning-button>
+                            </div>
+                        </lightning-record-edit-form>
+                    </div>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+
+    </div>
+</template>

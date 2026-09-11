@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Permissão de visualização para a aba Aula LWC</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Aula LWC Access</label>
+    <tabSettings>
+        <tab>Aula_LWC</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+</PermissionSet>
