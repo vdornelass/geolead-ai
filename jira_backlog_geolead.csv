@@ -1,27 +1,27 @@
-﻿Issue Type,Issue ID,Parent ID,Summary,Description,Priority,Labels,Assignee,Sprint,Story Points
-Epic,EP-01,,[EP01] Modelagem de Dados & Schema Core (Squad 1),"Criacao dos 7 objetos customizados, campos formulas, roll-ups e record types necessarios para suportar a operacao regional.",High,squad-dados,Squad 1 (Membros 1 e 2),Sprint 1,13
-Epic,EP-02,,"[EP02] Seguranca, Perfis & Telas Declarativas (Squad 2)","Configuracao dos 3 perfis de seguranca, hierarquia de papeis, regras de compartilhamento territorial e Dynamic Forms.",High,squad-seguranca,Squad 2 (Membros 3 e 4),Sprint 1,13
-Epic,EP-03,,"[EP03] Automacoes No-Code, SLAs & Aprovacao (Squad 3)","Implementacao dos 3 Record-Triggered Flows, processo de aprovacao orcamentaria em 2 niveis e Screen Flow com subflow.",High,squad-automacoes,Squad 3 (Membros 5 e 6),Sprint 2,21
-Epic,EP-04,,"[EP04] Engenharia Pro-Code, Integracao ViaCEP & QA (Squad 4)","Construcao da integracao REST ViaCEP assincrona, Trigger Framework corporativo e cobertura de testes unitarios >= 85%.",Highest,squad-fullstack,Squad 4 (Membro 7 e Voce),Sprint 2,21
-Epic,EP-05,,[EP05] Interfaces LWC & Analytics Executivo (Squad 4),"Desenvolvimento dos 3 componentes LWC (Cockpit, Busca CEP e Pitch), Lightning App GeoLead AI e Dashboards Executivo e Operacional.",High,squad-fullstack,Voce (Tech Lead),Sprint 3,21
-Task,TASK-01,EP-01,Criar os 7 Objetos Customizados e Relacionamentos,"Criar Campanha_Regional__c, Interesse_Captado__c, Lead_Score__c, Regiao_Comercial__c, Historico_Conversao__c, Meta_Regional__c e Endereco_Integrado__c. Configurar Master-Detail e Lookups.",High,squad-dados,Membro 1 (Arquiteto de Dados),Sprint 1,5
-Task,TASK-02,EP-01,"Configurar Record Types de Campanha (Digital, Evento, Parceiro)",Criar os 3 Record Types no objeto Campanha_Regional__c com picklists e atributos especificos para cada canal.,Medium,squad-dados,Membro 1 (Arquiteto de Dados),Sprint 1,3
-Task,TASK-03,EP-01,Criar Campos Formulas de Rentabilidade e Metricas,"Criar formulas: Score_Final__c, ROI__c [(Receita - Orcamento) / Orcamento], Dias_Restantes_Campanha__c e CPL_Estimado__c.",High,squad-dados,Membro 2 (Engenheiro de Metricas),Sprint 1,5
-Task,TASK-04,EP-01,Criar Roll-Up Summaries e Validation Rules,Roll-Ups na Campanha para somar Leads Convertidos e Receita Gerada. Validation Rules para obrigar Motivo de Perda ao desqualificar e bloquear datas retroativas.,Medium,squad-dados,Membro 2 (Engenheiro de Metricas),Sprint 1,3
-Task,TASK-05,EP-02,Configurar Perfis de Acesso e Role Hierarchy,"Criar os 3 perfis (Operacional, Gestor, Administrativo) e a arvore de papeis: Operador -> Coordenador -> Diretor.",High,squad-seguranca,Membro 3 (Especialista em Seguranca),Sprint 1,5
-Task,TASK-06,EP-02,Implementar Sharing Rules Territoriais e Permission Sets,Configurar regras de compartilhamento baseadas em criterios pela Regiao_Comercial__c e criar Permission Sets para auditores.,High,squad-seguranca,Membro 3 (Especialista em Seguranca),Sprint 1,5
-Task,TASK-07,EP-02,Criar Page Layouts e Ativar Dynamic Forms,Montar Lightning Record Pages com Dynamic Forms para exibir secoes e campos condicionalmente (ex: secao de motivo de descarte).,Medium,squad-seguranca,Membro 4 (UX Declarativa),Sprint 2,5
-Task,TASK-08,EP-02,Configurar Dynamic Actions nas Paginas de Registro,Configurar visibilidade dinamica de botoes de acao (ex: Enviar para Aprovacao visivel apenas em status Rascunho).,Low,squad-seguranca,Membro 4 (UX Declarativa),Sprint 2,3
-Task,TASK-09,EP-03,Flow 1: Roteamento Territorial Automatico de Leads,Record-Triggered Flow para associar o lead recem-criado a Regiao_Comercial__c correspondente a cidade/UF informada.,High,squad-automacoes,Membro 5 (Especialista em Flows),Sprint 2,5
-Task,TASK-10,EP-03,Flow 2: Monitoramento de SLA e Transbordo de Leads,"Flow temporizado que monitora o status Novo. Se estourar 30 min sem primeiro contato, dispara alerta ao Coordenador e executa transbordo.",High,squad-automacoes,Membro 5 (Especialista em Flows),Sprint 2,5
-Task,TASK-11,EP-03,Flow 3: Criacao de Historico na Conversao do Lead,"Record-Triggered Flow que dispara ao converter o lead, criando registro em Historico_Conversao__c e atualizando a receita na Campanha.",Medium,squad-automacoes,Membro 5 (Especialista em Flows),Sprint 2,3
-Task,TASK-12,EP-03,Configurar Processo de Aprovacao em 2 Niveis de Orcamento,"Approval Process para Campanha_Regional__c: Nivel 1 (Coordenador) ate R$ 15k; Nivel 2 (Diretor Comercial) acima de R$ 15k, com bloqueio de edicao.",High,squad-automacoes,Membro 6 (Processos de Negocio),Sprint 2,5
-Task,TASK-13,EP-03,Criar Screen Flow Guiado com Subflow de Duplicidade,Wizard de cadastro rapido de leads para eventos presenciais com subflow encadeado para verificacao de e-mail/CNPJ duplicado.,Medium,squad-automacoes,Membro 6 (Processos de Negocio),Sprint 2,5
-Task,TASK-14,EP-04,Implementar Apex Callout REST ViaCEP com Fallback (Frente 5),"Criar ViaCEPCalloutService para consulta de CEP, tratamento de cidades com CEP unico (-000), Queueable Apex e gravacao de logs em Endereco_Integrado__c.",Highest,squad-fullstack,Voce (Tech Lead Full-Stack),Sprint 2,8
-Task,TASK-15,EP-04,Implementar Trigger Framework Corporativo,Estruturar padrao Trigger Handler e Service Pattern para CampanhaTrigger e InteresseCaptadoTrigger.,High,squad-fullstack,Membro 7 (Core Apex & QA),Sprint 2,5
-Task,TASK-16,EP-04,Desenvolver Testes Unitarios com Cobertura >= 85%,"Criar HttpCalloutMockFactory, TestDataFactory e classes de teste unitario cobrindo cenarios positivos, negativos e limites.",Highest,squad-fullstack,Membro 7 (Core Apex & QA),Sprint 3,8
-Task,TASK-17,EP-05,Desenvolver LWC regionalLeadCockpit (Frente 7),"Painel operacional do SDR com ordenacao por Lead Score, semaforo visual de SLA (verde, amarelo, vermelho) e filtros por regiao.",High,squad-fullstack,Voce (Tech Lead Full-Stack),Sprint 3,8
-Task,TASK-18,EP-05,Desenvolver LWC cepAddressLookup (Frente 7),"Componente interativo de busca de CEP com feedback visual de carregamento, integracao com Apex ViaCEP e tratamento de erros.",High,squad-fullstack,Voce (Tech Lead Full-Stack),Sprint 2,5
-Task,TASK-19,EP-05,Desenvolver LWC aiSalesPitchAssistant (Frente 7),Assistente na pagina do lead que sintetiza a dor da campanha e sugere roteiro comercial hiperlocalizado para ligacao ou WhatsApp.,Medium,squad-fullstack,Voce (Tech Lead Full-Stack),Sprint 3,5
-Task,TASK-20,EP-05,Construir Dashboards Executivo e Operacional (Frente 8),"Criar Relatorios e Dashboards: Executivo (ROI, Metas, Receita por Canal) e Operacional (Fila diaria, SLA, Conversao por Canal).",High,squad-fullstack,Voce (Tech Lead Full-Stack),Sprint 3,5
-Task,TASK-21,EP-05,Criar Lightning App Personalizada e Gestao de Git/SFDX (Frente 8),"Configurar App GeoLead AI, orquestrar branches no Git, garantir deploys sem conflito e liderar ensaio geral da banca.",High,squad-fullstack,Voce (Tech Lead Full-Stack),Sprint 3,5
+Issue Type,Issue Key,Parent Epic,Summary,Assignee / Squad,Sprint,Story Points,Status
+Epic,SCRUM-8,,EP01 - Banco de Dados & Métricas,Squad 1 (Membros 1 e 2),Backlog,,To Do
+Epic,SCRUM-13,,EP02 - Segurança & Acessos,Squad 2 (Membros 3 e 4),Backlog,,To Do
+Epic,SCRUM-18,,EP03 - Automações & Regras,Squad 3 (Membros 5 e 6),Backlog,,To Do
+Epic,SCRUM-24,,EP04 - Integração ViaCEP & Código,Squad 4 (Membro 7 e Você),Backlog,,To Do
+Epic,SCRUM-28,,EP05 - Telas & Dashboards,Squad 4 (Você - Tech Lead),Backlog,,To Do
+Task,SCRUM-9,SCRUM-8,Criar 7 Objetos & Relacionamentos,Membro 1 (Arquiteto de Dados),Sprint 1 - Fundação,5,To Do
+Task,SCRUM-10,SCRUM-8,Tipos de Campanha (Record Types),Membro 1 (Arquiteto de Dados),Sprint 1 - Fundação,3,To Do
+Task,SCRUM-11,SCRUM-8,Fórmulas de ROI & Métricas,Membro 2 (Engenheiro de Métricas),Sprint 1 - Fundação,5,To Do
+Task,SCRUM-12,SCRUM-8,Roll-Ups & Travas de Validação,Membro 2 (Engenheiro de Métricas),Sprint 1 - Fundação,3,To Do
+Task,SCRUM-14,SCRUM-13,Perfis & Hierarquia de Cargos,Membro 3 (Especialista em Segurança),Sprint 1 - Fundação,5,To Do
+Task,SCRUM-15,SCRUM-13,Regras de Compartilhamento & Acessos,Membro 3 (Especialista em Segurança),Sprint 1 - Fundação,5,To Do
+Task,SCRUM-16,SCRUM-13,Page Layouts & Dynamic Forms,Membro 4 (UX Declarativa),Sprint 2 - Engenharia,5,To Do
+Task,SCRUM-17,SCRUM-13,Dynamic Actions nas Páginas,Membro 4 (UX Declarativa),Sprint 2 - Engenharia,3,To Do
+Task,SCRUM-19,SCRUM-18,Flow: Roteamento de Leads,Membro 5 (Especialista em Flows),Sprint 2 - Engenharia,5,To Do
+Task,SCRUM-20,SCRUM-18,Flow: SLA & Transbordo de Leads,Membro 5 (Especialista em Flows),Sprint 2 - Engenharia,5,To Do
+Task,SCRUM-21,SCRUM-18,Flow: Histórico na Conversão,Membro 5 (Especialista em Flows),Sprint 2 - Engenharia,3,To Do
+Task,SCRUM-22,SCRUM-18,Aprovação de Orçamento (2 Níveis),Membro 6 (Processos de Negócio),Sprint 2 - Engenharia,5,To Do
+Task,SCRUM-23,SCRUM-18,Screen Flow com Subflow Duplicidade,Membro 6 (Processos de Negócio),Sprint 2 - Engenharia,5,To Do
+Task,SCRUM-25,SCRUM-24,Apex Callout ViaCEP & Fallback,Você (Tech Lead Full-Stack),Sprint 2 - Engenharia,8,To Do
+Task,SCRUM-26,SCRUM-24,Trigger Framework Corporativo,Membro 7 (Core Apex & QA),Sprint 2 - Engenharia,5,To Do
+Task,SCRUM-30,SCRUM-28,LWC cepAddressLookup (ViaCEP),Você (Tech Lead Full-Stack),Sprint 2 - Engenharia,5,To Do
+Task,SCRUM-27,SCRUM-24,Testes Unitários Apex (>= 85%),Membro 7 (Core Apex & QA),Sprint 3 - LWC & Analytics,8,To Do
+Task,SCRUM-29,SCRUM-28,LWC Cockpit Regional & SLA,Você (Tech Lead Full-Stack),Sprint 3 - LWC & Analytics,8,To Do
+Task,SCRUM-31,SCRUM-28,LWC Assistente IA de Pitch,Você (Tech Lead Full-Stack),Sprint 3 - LWC & Analytics,5,To Do
+Task,SCRUM-32,SCRUM-28,Dashboards Executivo & Operacional,Você (Tech Lead Full-Stack),Sprint 3 - LWC & Analytics,5,To Do
+Task,SCRUM-33,SCRUM-28,App GeoLead AI & Deploy SFDX,Você (Tech Lead Full-Stack),Sprint 3 - LWC & Analytics,5,To Do
