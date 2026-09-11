@@ -18,7 +18,7 @@
 - [1. Diagnóstico de Mercado (Árvore de Problemas)](#1-diagnóstico-de-mercado-árvore-de-problemas)
 - [2. A Solução: Plataforma GeoLead AI](#2-a-solução-plataforma-geolead-ai)
 - [3. Conformidade com os Requisitos Obrigatórios do Edital](#3-conformidade-com-os-requisitos-obrigatórios-do-edital)
-- [4. Organização da Equipe (9 Membros em 4 Squads)](#4-organização-da-equipe-9-membros-em-4-squads)
+- [4. Organização da Equipe (Squads e Funções)](#4-organização-da-equipe-squads-e-funções)
 - [5. Gestão Ágil no Jira & Convenção de Commits](#5-gestão-ágil-no-jira--convenção-de-commits)
 - [6. Arquitetura do Repositório (`force-app`)](#6-arquitetura-do-repositório-force-app)
 - [7. Como Fazer Deploy e Testar na Org](#7-como-fazer-deploy-e-testar-na-org)
@@ -146,7 +146,7 @@ O projeto foi rigorosamente desenhado para atender e superar todos os critérios
 
 ---
 
-## 4. Organização da Equipe (9 Membros em 4 Squads)
+## 4. Organização da Equipe (Squads e Funções)
 
 Para garantir máxima produtividade sem conflitos de deploy, a equipe está organizada em **4 squads ágeis**:
 
@@ -169,7 +169,7 @@ graph TD
 
     subgraph S4 ["Squad 4: Liderança & Engenharia Full-Stack"]
         R7["Tech Lead & Engenheiro de Core Apex / QA<br/>(Liderança Geral, Triggers, ViaCEP REST e Testes >= 85%)"]
-        R8["Co-Lead Técnico & Arquiteto de Soluções (Braço Direito)<br/>(Code Review, Governança, Suporte às Squads e DevOps)"]
+        R8["Co-Lead Técnico & Arquiteto de Soluções<br/>(Code Review, Governança, Suporte às Squads e DevOps)"]
         R9["Desenvolvedor Front-End & Interfaces LWC<br/>(3 LWCs, Dashboards Executivo/Operacional e Lightning App)"]
     end
 
@@ -186,8 +186,8 @@ graph TD
 | | **Especialista em UX Declarativa** | Lightning Record Pages, Dynamic Forms e Dynamic Actions contextuais. |
 | **Squad 3: Automações No-Code & Processos** | **Especialista em Flows** | 3 Record-Triggered Flows (Roteamento Territorial, SLA/Transbordo e Histórico na Conversão). |
 | | **Especialista em Processos de Negócio** | Processo de Aprovação em 2 Níveis de Orçamento e Screen Flow com Subflow de Duplicidade. |
-| **Squad 4: Liderança & Engenharia Full-Stack** | **Tech Lead & Core Apex / QA** *(Você)* | Arquitetura Geral, Callout ViaCEP REST, Trigger Framework Corporativo e Testes Unitários ($\ge 85\%$). |
-| | **Co-Lead Técnico & Arquiteto de Soluções** *(Braço Direito)* | Code Review de PRs, Alinhamento Técnico entre Squads, Homologação e DevOps SFDX. |
+| **Squad 4: Liderança & Engenharia Full-Stack** | **Tech Lead & Core Apex / QA** | Arquitetura Geral, Callout ViaCEP REST, Trigger Framework Corporativo e Testes Unitários ($\ge 85\%$). |
+| | **Co-Lead Técnico & Arquiteto de Soluções** | Code Review de PRs, Alinhamento Técnico entre Squads, Homologação e DevOps SFDX. |
 | | **Desenvolvedor Front-End & Interfaces LWC** | Construção dos 3 LWCs (Cockpit SLA, Busca CEP e Pitch IA), Dashboards e Lightning App. |
 
 ---
@@ -223,12 +223,10 @@ git commit -m "SCRUM-27: test(apex) criacao de HttpCalloutMockFactory com cobert
 O repositório segue o padrão modular do **Salesforce DX (SFDX)**:
 
 ```text
-agitated-babbage/
+geolead-ai/
 ├── .forceignore
 ├── sfdx-project.json
 ├── README.md                              <-- Documentação Oficial da Solução
-├── PLANEJAMENTO_PROJETO_CAPGEMINI.pdf     <-- Planejamento Executivo (2 páginas)
-├── jira_backlog_geolead.csv               <-- Backlog Completo de Importação do Jira
 └── force-app/main/default/
     ├── applications/
     │   └── GeoLead_AI.app-meta.xml        # Lightning App Personalizada
