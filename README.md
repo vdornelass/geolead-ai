@@ -1,4 +1,4 @@
-# 📍 GeoLead AI — Gestão Inteligente de Campanhas e Leads Regionais
+# GeoLead AI — Gestão Inteligente de Campanhas e Leads Regionais
 
 [![Salesforce](https://img.shields.io/badge/Salesforce-Enterprise%20CRM-00A1E0?logo=salesforce&logoColor=white)](https://salesforce.com)
 [![Apex](https://img.shields.io/badge/Back--End-Apex%20%26%20Triggers-1798c1)](https://developer.salesforce.com)
@@ -13,12 +13,12 @@
 
 ---
 
-## 📑 Sumário Executivo
+## Sumário Executivo
 
 - [1. Diagnóstico de Mercado (Árvore de Problemas)](#1-diagnóstico-de-mercado-árvore-de-problemas)
 - [2. A Solução: Plataforma GeoLead AI](#2-a-solução-plataforma-geolead-ai)
 - [3. Conformidade com os Requisitos Obrigatórios do Edital](#3-conformidade-com-os-requisitos-obrigatórios-do-edital)
-- [4. Organização da Equipe (8 Membros em 4 Squads)](#4-organização-da-equipe-8-membros-em-4-squads)
+- [4. Organização da Equipe (4 Squads)](#4-organização-da-equipe-4-squads)
 - [5. Gestão Ágil no Jira & Convenção de Commits](#5-gestão-ágil-no-jira--convenção-de-commits)
 - [6. Arquitetura do Repositório (`force-app`)](#6-arquitetura-do-repositório-force-app)
 - [7. Como Fazer Deploy e Testar na Org](#7-como-fazer-deploy-e-testar-na-org)
@@ -87,7 +87,7 @@ flowchart LR
    * **Explicabilidade da Nota:** O objeto `Lead_Score__c` armazena não apenas o número, mas os 3 principais fatores positivos e de risco para o vendedor entender o motivo da nota.
 
 4. **Módulo 4: Cockpit do SDR & Speed-to-Lead**
-   * **LWC `regionalLeadCockpit`:** Painel unificado tipo "mesa de operações" com semáforo visual de SLA (🟢 <15m, 🟡 <45m, 🔴 >45m) e ordenação por pontuação.
+   * **LWC `regionalLeadCockpit`:** Painel unificado tipo "mesa de operações" com semáforo visual de SLA (Verde: <15 min, Amarelo: <45 min, Vermelho: >45 min) e ordenação por pontuação.
    * **Automação de Transbordo por Flow:** Se um lead passar mais de 30 minutos sem atendimento, o Flow notifica o Coordenador e transfere o registro para o operador de plantão.
    * **LWC `aiSalesPitchAssistant`:** Gera argumentos e roteiro de abordagem comercial contextualizados com as características socioeconômicas da praça regional do lead.
    * **Anti-Descarte Silencioso:** Validação obrigatória de *Motivo de Perda* para fechar o loop de feedback com o time de marketing.
@@ -124,30 +124,30 @@ O projeto foi rigorosamente desenhado para atender e superar todos os critérios
 
 ---
 
-## 4. Organização da Equipe (8 Membros em 4 Squads)
+## 4. Organização da Equipe (4 Squads)
 
-Para garantir máxima produtividade sem conflitos de deploy, a equipe está organizada em **4 duplas ágeis**:
+Para garantir máxima produtividade sem conflitos de deploy, a equipe está organizada em **4 squads ágeis**:
 
 ```mermaid
 graph TD
     subgraph S1 ["Squad 1: Dados & Métricas"]
-        M1["Membro 1: Arquiteto de Dados<br/>(7 Objetos, Relacionamentos e Record Types)"]
-        M2["Membro 2: Engenheiro de Métricas<br/>(Fórmulas, Roll-Ups e Validation Rules)"]
+        R1["Arquiteto de Dados<br/>(7 Objetos, Relacionamentos e Record Types)"]
+        R2["Engenheiro de Métricas<br/>(Fórmulas, Roll-Ups e Validation Rules)"]
     end
 
     subgraph S2 ["Squad 2: Segurança & UX Declarativa"]
-        M3["Membro 3: Especialista em Segurança<br/>(3 Perfis, Role Hierarchy e Sharing Rules)"]
-        M4["Membro 4: UX Declarativa<br/>(Dynamic Forms, Layouts e Dynamic Actions)"]
+        R3["Especialista em Segurança<br/>(3 Perfis, Role Hierarchy e Sharing Rules)"]
+        R4["Especialista em UX Declarativa<br/>(Dynamic Forms, Layouts e Dynamic Actions)"]
     end
 
     subgraph S3 ["Squad 3: Automações No-Code & Processos"]
-        M5["Membro 5: Especialista em Flows<br/>(3 Record-Triggered Flows de Roteamento e SLA)"]
-        M6["Membro 6: Especialista em Processos<br/>(Aprovação em 2 Níveis e Screen Flow)"]
+        R5["Especialista em Flows<br/>(3 Record-Triggered Flows de Roteamento e SLA)"]
+        R6["Especialista em Processos de Negócio<br/>(Aprovação em 2 Níveis e Screen Flow)"]
     end
 
     subgraph S4 ["Squad 4: Engenharia Full-Stack & Entrega"]
-        M7["Membro 7: Engenheiro de Core Apex & QA<br/>(Trigger Framework e Testes Unitários >= 85%)"]
-        VOCE["VOCÊ: Tech Lead Full-Stack & Delivery Lead<br/>(Integração ViaCEP/Queueable, 3 LWCs, Dashboards e DevOps)"]
+        R7["Engenheiro de Core Apex & QA<br/>(Trigger Framework e Testes Unitários >= 85%)"]
+        R8["Tech Lead Full-Stack & Delivery Lead<br/>(Integração ViaCEP/Queueable, 3 LWCs, Dashboards e DevOps)"]
     end
 
     S1 --> S2
@@ -155,17 +155,28 @@ graph TD
     S2 & S3 --> S4
 ```
 
+| Squad | Cargo / Função | Escopo Técnico de Entrega |
+| :--- | :--- | :--- |
+| **Squad 1: Dados & Métricas** | **Arquiteto de Dados** | 7 Objetos Customizados, Relacionamentos (Master-Detail/Lookup) e Record Types de Campanha. |
+| | **Engenheiro de Métricas** | Campos Fórmulas (Score, ROI Real, Dias Restantes), Roll-Up Summaries e Regras de Validação. |
+| **Squad 2: Segurança & UX Declarativa** | **Especialista em Segurança** | 3 Perfis de Acesso, Role Hierarchy (Hierarquia de Papéis) e Sharing Rules Territoriais. |
+| | **Especialista em UX Declarativa** | Lightning Record Pages, Dynamic Forms e Dynamic Actions contextuais. |
+| **Squad 3: Automações No-Code & Processos** | **Especialista em Flows** | 3 Record-Triggered Flows (Roteamento Territorial, SLA/Transbordo e Histórico na Conversão). |
+| | **Especialista em Processos de Negócio** | Processo de Aprovação em 2 Níveis de Orçamento e Screen Flow com Subflow de Duplicidade. |
+| **Squad 4: Engenharia Full-Stack & Entrega** | **Engenheiro de Core Apex & QA** | Trigger Framework Corporativo, Service Layer, TestDataFactory e Testes Unitários ($\ge 85\%$). |
+| | **Tech Lead Full-Stack & Delivery Lead** | Integração REST ViaCEP com Fallback, 3 LWCs, Dashboards Executivo/Operacional e Arquitetura SFDX. |
+
 ---
 
 ## 5. Gestão Ágil no Jira & Convenção de Commits
 
 O projeto é gerenciado ativamente no **Jira Software Cloud**:  
-🔗 **Painel do Jira:** [geolead-ai.atlassian.net](https://geolead-ai.atlassian.net/jira/software/projects/SCRUM/boards/1/backlog)
+**Painel do Jira:** [geolead-ai.atlassian.net](https://geolead-ai.atlassian.net/jira/software/projects/SCRUM/boards/1/backlog)
 
 ### Estrutura de Sprints
-* 📦 **Sprint 1 — Fundação:** Modelagem dos 7 Objetos, Fórmulas de ROI, Perfis e Role Hierarchy. *(Membros 1, 2 e 3)*
-* 📦 **Sprint 2 — Engenharia:** 3 Record-Triggered Flows, Processo de Aprovação em 2 Níveis, Dynamic Forms, Apex Callout ViaCEP e Triggers. *(Membros 4, 5, 6, 7 e Você)*
-* 📦 **Sprint 3 — LWC & Analytics:** 3 Componentes LWC, Testes Unitários ($\ge 85\%$), Dashboards Executivo/Operacional e App GeoLead AI. *(Você e Membro 7)*
+* **Sprint 1 — Fundação:** Modelagem dos 7 Objetos, Fórmulas de ROI, Perfis e Role Hierarchy. *(Squad 1 e Segurança)*
+* **Sprint 2 — Engenharia:** 3 Record-Triggered Flows, Processo de Aprovação em 2 Níveis, Dynamic Forms, Apex Callout ViaCEP e Triggers. *(Squad 2, Squad 3 e Squad 4)*
+* **Sprint 3 — LWC & Analytics:** 3 Componentes LWC, Testes Unitários ($\ge 85\%$), Dashboards Executivo/Operacional e App GeoLead AI. *(Squad 4)*
 
 ### Convenção de Smart Commits (Rastreabilidade Git ➔ Jira)
 Todos os commits devem referenciar a chave do card correspondente no Jira:
