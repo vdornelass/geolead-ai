@@ -18,7 +18,7 @@
 - [1. Diagnóstico de Mercado (Árvore de Problemas)](#1-diagnóstico-de-mercado-árvore-de-problemas)
 - [2. A Solução: Plataforma GeoLead AI](#2-a-solução-plataforma-geolead-ai)
 - [3. Conformidade com os Requisitos Obrigatórios do Edital](#3-conformidade-com-os-requisitos-obrigatórios-do-edital)
-- [4. Organização da Equipe (4 Squads)](#4-organização-da-equipe-4-squads)
+- [4. Organização da Equipe (9 Membros em 4 Squads)](#4-organização-da-equipe-9-membros-em-4-squads)
 - [5. Gestão Ágil no Jira & Convenção de Commits](#5-gestão-ágil-no-jira--convenção-de-commits)
 - [6. Arquitetura do Repositório (`force-app`)](#6-arquitetura-do-repositório-force-app)
 - [7. Como Fazer Deploy e Testar na Org](#7-como-fazer-deploy-e-testar-na-org)
@@ -58,44 +58,66 @@ graph TD
 
 ## 2. A Solução: Plataforma GeoLead AI
 
-O **GeoLead AI** unifica a governança de marketing, automação de dados geográficos e produtividade do vendedor em **5 módulos integrados**:
+O **GeoLead AI** é uma plataforma desenvolvida dentro do Salesforce que resolve os principais gargalos de vendas regionais: **o orçamento de marketing é gasto sem controle formal, os leads chegam com CEP incorreto, demoram para ser atendidos e acabam fechando com a concorrência.**
+
+A solução conecta 5 etapas em um fluxo contínuo e integrado:
 
 ```mermaid
 flowchart LR
-    M1["1. Governança<br/>Aprovação em 2 Níveis<br/>(Alçadas por Valor)"] --> M2["2. Motor Geográfico<br/>Apex Callout ViaCEP<br/>(Fallback CEP -000)"]
-    M2 --> M3["3. Lead Scoring<br/>Cálculo Ponderado<br/>(Explicabilidade)"]
-    M3 --> M4["4. Cockpit do SDR<br/>LWC com Semáforo de SLA<br/>(Pitch Hiperlocal)"]
-    M4 --> M5["5. Fechamento de Ciclo<br/>Roll-Ups de Receita<br/>(Dashboards Executivo/Operacional)"]
+    M1["1. Controle de Verba<br/>(Aprovação de Orçamento)"] --> M2["2. Validação de CEP<br/>(Busca ViaCEP e Praça)"]
+    M2 --> M3["3. Nota do Lead<br/>(Lead Scoring Ponderado)"]
+    M3 --> M4["4. Atendimento Rápido<br/>(Cockpit LWC e SLA 30 min)"]
+    M4 --> M5["5. Fechamento & ROI<br/>(Relatórios em Tempo Real)"]
 ```
 
-### Detalhamento dos 5 Módulos
+### Como Funciona Cada Módulo (Explicado de Forma Simples e Detalhada)
 
-1. **Módulo 1: Governança de Campanhas & Controle de Verba**
-   * **Record Types de Campanha:** Segmentação entre `Digital`, `Evento` e `Parceiro`, com campos específicos para cada canal.
-   * **Processo de Aprovação em 2 Níveis:**
-     * *Alçada 1 (até R$ 15.000):* Aprovação pelo **Coordenador/Gestor Regional**.
-     * *Alçada 2 (acima de R$ 15.000):* Escalonamento obrigatório para validação final do **Diretor Comercial**.
-   * **Travas Anti-Campanha Zumbi:** Bloqueio de ativação sem prazo final definido e meta regional atrelada.
+#### 1. Controle de Verba e Governança (Fim das campanhas sem controle)
+* **O que resolve:** Impede que equipes gastem verba da empresa em eventos ou anúncios digitais sem autorização formal e sem meta clara de faturamento.
+* **Como funciona na prática:**
+  * Toda campanha criada no Salesforce (`Campanha_Regional__c`) é classificada pelo seu canal: `Digital`, `Evento` ou `Parceiro` (via *Record Types*).
+  * **Aprovação automática em 2 níveis:**
+    * Campanhas de até **R$ 15.000** precisam apenas da aprovação do **Coordenador Regional**.
+    * Campanhas acima de **R$ 15.000** exigem aprovação adicional do **Diretor Comercial**.
+  * Enquanto o processo de aprovação está em andamento, o registro fica bloqueado para edição (*Lock Record*), impedindo alterações indevidas no orçamento.
+  * **Trava automática:** Nenhuma campanha pode ser ativada se não tiver uma data final estipulada e uma meta regional atrelada (`Meta_Regional__c`).
 
-2. **Módulo 2: Motor Geográfico & Territorial (GeoEngine)**
-   * **Apex Callout REST ViaCEP:** Ao digitar o CEP de 8 dígitos, o sistema consulta a API pública e popula instantaneamente o objeto `Endereco_Integrado__c`.
-   * **Fallback Resiliente para o Interior:** Para cidades com CEP único municipal (terminado em `-000`), o sistema preenche Cidade e Estado e desbloqueia o preenchimento manual guiado, gravando log de auditoria.
-   * **Roteamento "Operação > Sede":** Resolução de conflitos Matriz vs. Filial priorizando o endereço de entrega para associar automaticamente à `Regiao_Comercial__c` correta.
+#### 2. Validação de CEP e Roteamento Regional (GeoEngine)
+* **O que resolve:** Evita que um cliente do Nordeste seja atendido por um vendedor do Sudeste, ou que cadastros com CEP incompleto fiquem abandonados no sistema.
+* **Como funciona na prática:**
+  * Ao informar o CEP de 8 dígitos na tela do lead (`Interesse_Captado__c`), o Salesforce conecta via internet com a API pública do **ViaCEP** através de código Apex (`ViaCEPCalloutService.cls` com processamento assíncrono via `ViaCEPQueueable.cls`).
+  * O sistema preenche automaticamente Rua, Bairro, Cidade e Estado no objeto `Endereco_Integrado__c`.
+  * **Tratamento para cidades do interior (Fallback CEP único):** Milhares de municípios do interior possuem apenas um CEP geral (terminado em `-000`). O GeoLead AI reconhece essa situação, preenche Cidade e Estado automaticamente e libera a tela para o preenchimento manual da rua, gravando log de auditoria sem travar a operação.
+  * O sistema identifica o estado e vincula o lead diretamente à **Região Comercial** correta (`Regiao_Comercial__c`), transferindo o registro para a fila do time de vendas daquela praça.
 
-3. **Módulo 3: Motor de Lead Scoring Preditivo & Explicável**
-   * **Cálculo Multidimensional (0 a 100 pontos):** Ponderação entre Canal de Origem (30%), Perfil Cadastral/Cargo (40%) e Taxa Histórica Regional (30%).
-   * **Explicabilidade da Nota:** O objeto `Lead_Score__c` armazena não apenas o número, mas os 3 principais fatores positivos e de risco para o vendedor entender o motivo da nota.
+#### 3. Nota Automática do Lead (Lead Scoring com explicação)
+* **O que resolve:** Acaba com o atendimento aleatório no "feeling", direcionando o tempo do vendedor prioritariamente para os contatos com maior chance de compra.
+* **Como funciona na prática:**
+  * O sistema calcula uma nota de **0 a 100** para cada contato no objeto `Lead_Score__c`, combinando três pilares:
+    1. **Origem do Lead (30%):** Eventos presenciais e parceiros homologados recebem peso superior a cadastros avulsos da web.
+    2. **Perfil Cadastral (40%):** Tomadores de decisão (Diretores, Gerentes) pontuam mais alto do que cargos operacionais.
+    3. **Taxa Histórica da Região (30%):** Praças que historicamente convertem mais aumentam a nota final do contato.
+  * **Explicabilidade da nota:** O vendedor não vê apenas um número frio; o sistema exibe os 3 principais fatores que compuseram a nota (ex: *"Diretor de Compras (+30)"*, *"Região com alta conversão (+20)"*), permitindo que ele entenda o potencial da oportunidade.
 
-4. **Módulo 4: Cockpit do SDR & Speed-to-Lead**
-   * **LWC `regionalLeadCockpit`:** Painel unificado tipo "mesa de operações" com semáforo visual de SLA (Verde: <15 min, Amarelo: <45 min, Vermelho: >45 min) e ordenação por pontuação.
-   * **Automação de Transbordo por Flow:** Se um lead passar mais de 30 minutos sem atendimento, o Flow notifica o Coordenador e transfere o registro para o operador de plantão.
-   * **LWC `aiSalesPitchAssistant`:** Gera argumentos e roteiro de abordagem comercial contextualizados com as características socioeconômicas da praça regional do lead.
-   * **Anti-Descarte Silencioso:** Validação obrigatória de *Motivo de Perda* para fechar o loop de feedback com o time de marketing.
+#### 4. Atendimento Rápido em até 30 Minutos (Cockpit do Vendedor e Alerta de SLA)
+* **O que resolve:** Contatar o lead nos primeiros 30 minutos multiplica a chance de conversão; após esse tempo, o cliente esfria e procura alternativas no mercado.
+* **Como funciona na prática:**
+  * **Cockpit Regional (LWC `regionalLeadCockpit`):** O vendedor atua em um painel unificado em Lightning Web Components que lista os leads ordenados pela pontuação (Lead Score) com um **semáforo de tempo visual**:
+    * **Verde:** Menos de 15 minutos na fila (Dentro da janela ideal de contato).
+    * **Amarelo:** Entre 15 e 30 minutos (Alerta de prazo de atendimento prestes a expirar).
+    * **Vermelho:** Mais de 30 minutos (SLA estourado, exigindo ação prioritária).
+  * **Transbordo Automático por Flow:** Se o lead permanecer mais de 30 minutos sem o primeiro atendimento do vendedor, um fluxo automático (*Record-Triggered Flow*) transfere o contato para a fila de transbordo e envia notificação imediata ao Coordenador de Vendas.
+  * **Assistente de Vendas Regional (LWC `aiSalesPitchAssistant`):** Componente que sintetiza a campanha de origem e gera roteiro de abordagem comercial customizado com as características e dores da região do comprador.
+  * **Trava Anti-Descarte Silencioso:** Qualquer descarte de oportunidade exige o preenchimento de *Motivo de Perda*, fornecendo dados ao marketing sobre motivos de objeção.
 
-5. **Módulo 5: Analytics de Fechamento de Ciclo & Metas**
-   * **Fórmulas e Roll-Up Summaries:** Cálculo automático em tempo real de **ROI Real** `[(Receita - Orçamento) / Orçamento]`, Leads Convertidos e Faturamento Acumulado.
-   * **Dashboard Operacional:** Acompanhamento diário da fila de leads, cumprimento de SLA e conversão por canal.
-   * **Dashboard Executivo:** Visão C-Level de faturamento por região, comparativo CPL vs. CAC e atingimento das cotas em `Meta_Regional__c`.
+#### 5. Fechamento de Vendas e Cálculo de Lucro Real (Analytics e Dashboards)
+* **O que resolve:** Oferece visão em tempo real para a diretoria sobre o retorno financeiro exato de cada centavo gasto em campanhas regionais.
+* **Como funciona na prática:**
+  * Ao converter uma venda, um registro imutável é criado no objeto `Historico_Conversao__c`, gravando tempo de ciclo, receita gerada e vendedor responsável.
+  * Fórmulas nativas e *Roll-Up Summaries* no objeto `Campanha_Regional__c` calculam automaticamente o **ROI Real**: `(Receita Gerada - Orçamento) / Orçamento`.
+  * **Dois painéis visuais (Dashboards):**
+    * **Dashboard Operacional:** Acompanhamento diário da fila de leads, cumprimento da meta de SLA de 30 minutos e taxa de conversão por vendedor.
+    * **Dashboard Executivo:** Visão C-Level comparando retorno financeiro por praça, eficiência por canal de marketing e percentual de atingimento das cotas cadastradas em `Meta_Regional__c`.
 
 ---
 
@@ -124,7 +146,7 @@ O projeto foi rigorosamente desenhado para atender e superar todos os critérios
 
 ---
 
-## 4. Organização da Equipe (4 Squads)
+## 4. Organização da Equipe (9 Membros em 4 Squads)
 
 Para garantir máxima produtividade sem conflitos de deploy, a equipe está organizada em **4 squads ágeis**:
 
@@ -145,9 +167,10 @@ graph TD
         R6["Especialista em Processos de Negócio<br/>(Aprovação em 2 Níveis e Screen Flow)"]
     end
 
-    subgraph S4 ["Squad 4: Engenharia Full-Stack & Entrega"]
-        R7["Engenheiro de Core Apex & QA<br/>(Trigger Framework e Testes Unitários >= 85%)"]
-        R8["Tech Lead Full-Stack & Delivery Lead<br/>(Integração ViaCEP/Queueable, 3 LWCs, Dashboards e DevOps)"]
+    subgraph S4 ["Squad 4: Liderança & Engenharia Full-Stack"]
+        R7["Tech Lead & Engenheiro de Core Apex / QA<br/>(Liderança Geral, Triggers, ViaCEP REST e Testes >= 85%)"]
+        R8["Co-Lead Técnico & Arquiteto de Soluções (Braço Direito)<br/>(Code Review, Governança, Suporte às Squads e DevOps)"]
+        R9["Desenvolvedor Front-End & Interfaces LWC<br/>(3 LWCs, Dashboards Executivo/Operacional e Lightning App)"]
     end
 
     S1 --> S2
@@ -163,8 +186,9 @@ graph TD
 | | **Especialista em UX Declarativa** | Lightning Record Pages, Dynamic Forms e Dynamic Actions contextuais. |
 | **Squad 3: Automações No-Code & Processos** | **Especialista em Flows** | 3 Record-Triggered Flows (Roteamento Territorial, SLA/Transbordo e Histórico na Conversão). |
 | | **Especialista em Processos de Negócio** | Processo de Aprovação em 2 Níveis de Orçamento e Screen Flow com Subflow de Duplicidade. |
-| **Squad 4: Engenharia Full-Stack & Entrega** | **Engenheiro de Core Apex & QA** | Trigger Framework Corporativo, Service Layer, TestDataFactory e Testes Unitários ($\ge 85\%$). |
-| | **Tech Lead Full-Stack & Delivery Lead** | Integração REST ViaCEP com Fallback, 3 LWCs, Dashboards Executivo/Operacional e Arquitetura SFDX. |
+| **Squad 4: Liderança & Engenharia Full-Stack** | **Tech Lead & Core Apex / QA** *(Você)* | Arquitetura Geral, Callout ViaCEP REST, Trigger Framework Corporativo e Testes Unitários ($\ge 85\%$). |
+| | **Co-Lead Técnico & Arquiteto de Soluções** *(Braço Direito)* | Code Review de PRs, Alinhamento Técnico entre Squads, Homologação e DevOps SFDX. |
+| | **Desenvolvedor Front-End & Interfaces LWC** | Construção dos 3 LWCs (Cockpit SLA, Busca CEP e Pitch IA), Dashboards e Lightning App. |
 
 ---
 

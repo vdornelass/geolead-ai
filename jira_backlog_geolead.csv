@@ -2,8 +2,8 @@ Issue Type,Issue Key,Parent Epic,Summary,Assignee / Squad,Sprint,Story Points,St
 Epic,SCRUM-8,,EP01 - Banco de Dados & Métricas,Squad 1: Dados & Métricas,Backlog,,To Do
 Epic,SCRUM-13,,EP02 - Segurança & Acessos,Squad 2: Segurança & UX Declarativa,Backlog,,To Do
 Epic,SCRUM-18,,EP03 - Automações & Regras,Squad 3: Automações No-Code & Processos,Backlog,,To Do
-Epic,SCRUM-24,,EP04 - Integração ViaCEP & Código,Squad 4: Engenharia Full-Stack & Entrega,Backlog,,To Do
-Epic,SCRUM-28,,EP05 - Telas & Dashboards,Squad 4: Engenharia Full-Stack & Entrega,Backlog,,To Do
+Epic,SCRUM-24,,EP04 - Integração ViaCEP & Código,Squad 4: Liderança & Engenharia Full-Stack,Backlog,,To Do
+Epic,SCRUM-28,,EP05 - Telas & Dashboards,Squad 4: Liderança & Engenharia Full-Stack,Backlog,,To Do
 Task,SCRUM-9,SCRUM-8,Criar 7 Objetos & Relacionamentos,Arquiteto de Dados,Sprint 1 - Fundação,5,To Do
 Task,SCRUM-10,SCRUM-8,Tipos de Campanha (Record Types),Arquiteto de Dados,Sprint 1 - Fundação,3,To Do
 Task,SCRUM-11,SCRUM-8,Fórmulas de ROI & Métricas,Engenheiro de Métricas,Sprint 1 - Fundação,5,To Do
@@ -17,11 +17,11 @@ Task,SCRUM-20,SCRUM-18,Flow: SLA & Transbordo de Leads,Especialista em Flows,Spr
 Task,SCRUM-21,SCRUM-18,Flow: Histórico na Conversão,Especialista em Flows,Sprint 2 - Engenharia,3,To Do
 Task,SCRUM-22,SCRUM-18,Aprovação de Orçamento (2 Níveis),Especialista em Processos de Negócio,Sprint 2 - Engenharia,5,To Do
 Task,SCRUM-23,SCRUM-18,Screen Flow com Subflow Duplicidade,Especialista em Processos de Negócio,Sprint 2 - Engenharia,5,To Do
-Task,SCRUM-25,SCRUM-24,Apex Callout ViaCEP & Fallback,Tech Lead Full-Stack & Delivery Lead,Sprint 2 - Engenharia,8,To Do
-Task,SCRUM-26,SCRUM-24,Trigger Framework Corporativo,Engenheiro de Core Apex & QA,Sprint 2 - Engenharia,5,To Do
-Task,SCRUM-30,SCRUM-28,LWC cepAddressLookup (ViaCEP),Tech Lead Full-Stack & Delivery Lead,Sprint 2 - Engenharia,5,To Do
-Task,SCRUM-27,SCRUM-24,Testes Unitários Apex (>= 85%),Engenheiro de Core Apex & QA,Sprint 3 - LWC & Analytics,8,To Do
-Task,SCRUM-29,SCRUM-28,LWC Cockpit Regional & SLA,Tech Lead Full-Stack & Delivery Lead,Sprint 3 - LWC & Analytics,8,To Do
-Task,SCRUM-31,SCRUM-28,LWC Assistente IA de Pitch,Tech Lead Full-Stack & Delivery Lead,Sprint 3 - LWC & Analytics,5,To Do
-Task,SCRUM-32,SCRUM-28,Dashboards Executivo & Operacional,Tech Lead Full-Stack & Delivery Lead,Sprint 3 - LWC & Analytics,5,To Do
-Task,SCRUM-33,SCRUM-28,App GeoLead AI & Deploy SFDX,Tech Lead Full-Stack & Delivery Lead,Sprint 3 - LWC & Analytics,5,To Do
+Task,SCRUM-25,SCRUM-24,Apex Callout ViaCEP & Fallback,Tech Lead & Core Apex / QA,Sprint 2 - Engenharia,8,To Do
+Task,SCRUM-26,SCRUM-24,Trigger Framework Corporativo,Tech Lead & Core Apex / QA,Sprint 2 - Engenharia,5,To Do
+Task,SCRUM-30,SCRUM-28,LWC cepAddressLookup (ViaCEP),Desenvolvedor Front-End & Interfaces LWC,Sprint 2 - Engenharia,5,To Do
+Task,SCRUM-27,SCRUM-24,Testes Unitários Apex (>= 85%),Tech Lead & Core Apex / QA,Sprint 3 - LWC & Analytics,8,To Do
+Task,SCRUM-29,SCRUM-28,LWC Cockpit Regional & SLA,Desenvolvedor Front-End & Interfaces LWC,Sprint 3 - LWC & Analytics,8,To Do
+Task,SCRUM-31,SCRUM-28,LWC Assistente IA de Pitch,Desenvolvedor Front-End & Interfaces LWC,Sprint 3 - LWC & Analytics,5,To Do
+Task,SCRUM-32,SCRUM-28,Dashboards Executivo & Operacional,Desenvolvedor Front-End & Interfaces LWC,Sprint 3 - LWC & Analytics,5,To Do
+Task,SCRUM-33,SCRUM-28,App GeoLead AI & Deploy SFDX,Co-Lead Técnico & Arquiteto de Soluções,Sprint 3 - LWC & Analytics,5,To Do
