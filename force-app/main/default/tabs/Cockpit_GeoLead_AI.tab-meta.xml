@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Cockpit interativo do MVP GeoLead AI (SDR, Copiloto IA, Dashboard Executivo e ViaCEP).</description>
+    <label>Cockpit GeoLead AI</label>
+    <lwcComponent>geoLeadCockpit</lwcComponent>
+    <motif>Custom63: Chip</motif>
+</CustomTab>

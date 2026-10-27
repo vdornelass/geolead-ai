@@ -1,0 +1,428 @@
+<template>
+    <div class="cockpit-wrapper">
+        <!-- CABEÇALHO CORPORATIVO GEOLEAD AI -->
+        <div class="header-banner slds-p-around_medium slds-m-bottom_medium">
+            <div class="slds-grid slds-grid_vertical-align-center slds-wrap">
+                <div class="slds-col slds-size_1-of-1 slds-large-size_7-of-12">
+                    <div class="slds-media slds-media_center">
+                        <div class="slds-media__figure">
+                            <div class="brand-icon-box">
+                                <lightning-icon icon-name="standard:location" size="medium" variant="inverse"></lightning-icon>
+                            </div>
+                        </div>
+                        <div class="slds-media__body">
+                            <div class="slds-grid slds-grid_vertical-align-center">
+                                <h1 class="brand-title">GeoLead <span class="brand-ai">AI</span></h1>
+                                <span class="badge-pill-header slds-m-left_small">MVP Enterprise • Tema 7</span>
+                            </div>
+                            <p class="brand-subtitle">
+                                Conectando validação geográfica, governança orçamentária e speed-to-lead para maximizar a conversão de vendas regionais.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SELETOR DE TELAS DO MVP -->
+                <div class="slds-col slds-size_1-of-1 slds-large-size_5-of-12 slds-text-align_right slds-m-top_x-small">
+                    <div class="mode-switcher">
+                        <button class={tabSdrClass} onclick={showSdrView}>
+                            1. Cockpit SDR &amp; Copiloto IA
+                        </button>
+                        <button class={tabExecClass} onclick={showExecView}>
+                            2. Painel Executivo &amp; ROI
+                        </button>
+                        <button class={tabCaptureClass} onclick={showCaptureView}>
+                            3. Captura &amp; ViaCEP (-000)
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================================================= -->
+        <!-- VISÃO 1: COCKPIT SDR, SEMÁFORO DE SLA, LEAD SCORE & COPILOTO REGIONAL IA   -->
+        <!-- ========================================================================= -->
+        <template if:true={isSdrView}>
+            <div class="slds-grid slds-gutters slds-wrap">
+                <!-- COLUNA ESQUERDA: FILA PRIORIZADA DE LEADS + SEMÁFORO SLA -->
+                <div class="slds-col slds-size_1-of-1 slds-large-size_5-of-12">
+                    <div class="panel-card">
+                        <div class="panel-header slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                            <div>
+                                <h2 class="panel-title">Fila Priorizada (Speed-to-Lead)</h2>
+                                <p class="panel-subtitle">Ordenada por Lead Score (0–100) e Semáforo de SLA</p>
+                            </div>
+                            <span class="sla-legend-pill">Transbordo Automático: 30 min</span>
+                        </div>
+
+                        <!-- LEGENDA DO SEMÁFORO -->
+                        <div class="sla-bar slds-grid slds-grid_align-spread slds-m-bottom_small">
+                            <span class="sla-dot-item"><span class="dot dot-green"></span> &lt; 15 min (No Prazo)</span>
+                            <span class="sla-dot-item"><span class="dot dot-yellow"></span> 15–30 min (Atenção)</span>
+                            <span class="sla-dot-item"><span class="dot dot-red"></span> &gt; 30 min (Transbordo)</span>
+                        </div>
+
+                        <!-- LISTA DE LEADS DA ORG -->
+                        <template for:each={enrichedLeads} for:item="lead">
+                            <div key={lead.id} class={lead.cardClass} data-id={lead.id} onclick={handleSelectLead}>
+                                <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
+                                    <div>
+                                        <div class="slds-grid slds-grid_vertical-align-center">
+                                            <span class="lead-name">{lead.nome}</span>
+                                            <span class={lead.tempBadgeClass}>{lead.temperatura}</span>
+                                        </div>
+                                        <p class="lead-company">{lead.cargo} • <strong>{lead.empresa}</strong></p>
+                                        <p class="lead-location">
+                                            📍 {lead.cidade} - {lead.uf} | CEP: {lead.cep}
+                                        </p>
+                                    </div>
+                                    <div class="score-circle">
+                                        <span class="score-num">{lead.scoreFinal}</span>
+                                        <span class="score-lbl">SCORE</span>
+                                    </div>
+                                </div>
+
+                                <div class="lead-card-footer slds-grid slds-grid_align-spread slds-grid_vertical-align-center slds-m-top_x-small">
+                                    <span class={lead.slaBadgeClass}>
+                                        ⏱ SLA: {lead.slaMinutos} min • {lead.slaLabel}
+                                    </span>
+                                    <span class={lead.cepBadgeClass}>
+                                        {lead.cepBadgeText}
+                                    </span>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+
+                <!-- COLUNA DIREITA: DETALHES DO LEAD SELECIONADO, EXPLICABILIDADE & COPILOTO IA -->
+                <div class="slds-col slds-size_1-of-1 slds-large-size_7-of-12">
+                    <template if:true={selectedLead}>
+                        <!-- HIGHLIGHTS PANEL DO LEAD SELECIONADO -->
+                        <div class="panel-card slds-m-bottom_medium">
+                            <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center slds-wrap">
+                                <div>
+                                    <span class="eyebrow-tag">LEAD SELECIONADO • {selectedLead.fila}</span>
+                                    <h2 class="selected-lead-title">{selectedLead.nome}</h2>
+                                    <p class="selected-lead-sub">
+                                        {selectedLead.cargo} na <strong>{selectedLead.empresa}</strong> (CNPJ: {selectedLead.cnpj})
+                                    </p>
+                                </div>
+                                <div class="slds-grid slds-gutters_x-small">
+                                    <div class="slds-col">
+                                        <button class="btn-outline" onclick={handleOpenRecord}>
+                                            Abrir Registro Salesforce
+                                        </button>
+                                    </div>
+                                    <div class="slds-col">
+                                        <button class="btn-primary" onclick={handleRegistrarContato}>
+                                            ✓ Registrar 1º Contato (SLA)
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- DADOS CADASTRAIS + ENDEREÇO VIACEP -->
+                            <div class="info-grid slds-grid slds-wrap slds-m-top_medium">
+                                <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                                    <span class="field-lbl">Campanha de Origem (Master-Detail)</span>
+                                    <p class="field-val">{selectedLead.campanhaNome} ({selectedLead.canal})</p>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                                    <span class="field-lbl">Região Comercial (Lookup)</span>
+                                    <p class="field-val">{selectedLead.regiaoNome} ({selectedLead.vocacao})</p>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                                    <span class="field-lbl">Endereço Integrado (ViaCEP: {selectedLead.cep})</span>
+                                    <p class="field-val">{selectedLead.logradouro} — {selectedLead.bairro}, {selectedLead.cidade}/{selectedLead.uf}</p>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                                    <span class="field-lbl">Contato Direto &amp; Status</span>
+                                    <p class="field-val">{selectedLead.telefone} • {selectedLead.email} ({selectedLead.status})</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CARD DE EXPLICABILIDADE DO LEAD SCORE (30 / 40 / 30) -->
+                        <div class="panel-card slds-m-bottom_medium">
+                            <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center slds-m-bottom_small">
+                                <h3 class="section-heading">🧠 Explicabilidade do Lead Score ({selectedLead.scoreFinal}/100 pts)</h3>
+                                <span class="priority-tag">{selectedLead.faixaPrioridade}</span>
+                            </div>
+
+                            <div class="slds-grid slds-gutters_x-small slds-m-bottom_small">
+                                <div class="slds-col slds-size_1-of-3">
+                                    <div class="metric-mini-box">
+                                        <span class="mini-lbl">Origem / Canal (30%)</span>
+                                        <strong class="mini-val">{selectedLead.notaCanal} pts</strong>
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-size_1-of-3">
+                                    <div class="metric-mini-box">
+                                        <span class="mini-lbl">Perfil / Cargo (40%)</span>
+                                        <strong class="mini-val">{selectedLead.notaPerfil} pts</strong>
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-size_1-of-3">
+                                    <div class="metric-mini-box">
+                                        <span class="mini-lbl">Histórico Praça (30%)</span>
+                                        <strong class="mini-val">{selectedLead.notaPraca} pts</strong>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="explain-box">
+                                <p class="explain-text">{selectedLead.explicabilidade}</p>
+                            </div>
+                        </div>
+
+                        <!-- COPILOTO DE ABORDAGEM REGIONAL (SALES PITCH ASSISTANT) -->
+                        <div class="panel-card ai-copilot-card">
+                            <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center slds-m-bottom_small">
+                                <div>
+                                    <span class="ai-badge">✨ COPILOTO REGIONAL IA • CONTEXTO HIPERLOCAL</span>
+                                    <h3 class="section-heading slds-m-top_xx-small">Roteiro Adaptado para {selectedLead.cidade} - {selectedLead.uf}</h3>
+                                </div>
+                                <button class="btn-copy" onclick={handleCopyPitch}>
+                                    {copyButtonLabel}
+                                </button>
+                            </div>
+
+                            <div class="pitch-block">
+                                <span class="pitch-label">1. DOR LOGÍSTICA E ECONÔMICA DA PRAÇA ({selectedLead.cidade}/{selectedLead.uf}):</span>
+                                <p class="pitch-content">{selectedLead.dorRegional}</p>
+                            </div>
+
+                            <div class="pitch-block">
+                                <span class="pitch-label">2. GANCHO DE ABERTURA CONVERSACIONAL (SEM JARGÃO DE CAPITAL):</span>
+                                <p class="pitch-content pitch-quote">"{selectedLead.pitchAbertura}"</p>
+                            </div>
+
+                            <div class="pitch-block">
+                                <span class="pitch-label">3. CONTORNO DE OBJEÇÃO REGIONAL:</span>
+                                <p class="pitch-content">{selectedLead.pitchObjecao}</p>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </template>
+
+        <!-- ========================================================================= -->
+        <!-- VISÃO 2: PAINEL EXECUTIVO DE EFICIÊNCIA REGIONAL, ALÇADAS & ROI REAL       -->
+        <!-- ========================================================================= -->
+        <template if:true={isExecView}>
+            <!-- 4 KPIS DE TOPO -->
+            <div class="slds-grid slds-gutters slds-wrap slds-m-bottom_medium">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4">
+                    <div class="kpi-card">
+                        <span class="kpi-label">RECEITA TOTAL GERADA</span>
+                        <div class="kpi-value kpi-blue">{formattedTotalReceita}</div>
+                        <span class="kpi-foot">Consolidado via Histórico de Conversão</span>
+                    </div>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4">
+                    <div class="kpi-card">
+                        <span class="kpi-label">CUSTO REAL EXECUTADO</span>
+                        <div class="kpi-value">{formattedTotalCusto}</div>
+                        <span class="kpi-foot">Alçada: &le; R$ 15k Coord. | &gt; R$ 15k Diretor</span>
+                    </div>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4">
+                    <div class="kpi-card">
+                        <span class="kpi-label">ROI REAL CONSOLIDADO</span>
+                        <div class="kpi-value kpi-green">+{formattedRoiMedio}%</div>
+                        <span class="kpi-foot">Fórmula: (Receita - Custo) / Custo</span>
+                    </div>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4">
+                    <div class="kpi-card">
+                        <span class="kpi-label">LEADS CAPTADOS ATIVOS</span>
+                        <div class="kpi-value">{totalLeadsCount} Leads</div>
+                        <span class="kpi-foot">100% com endereço ViaCEP validado</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- INSIGHT EXECUTIVO DE IA -->
+            <div class="insight-banner slds-m-bottom_medium">
+                <strong>💡 Insight Executivo GeoLead AI (A Armadilha do CPL Barato vs. ROI Real):</strong>
+                Campanhas de <em>Eventos Presenciais</em> e <em>Parceiros Regionais</em> apresentam custo inicial superior ao Digital, mas geram <strong>ROI Real acima de 815%</strong> graças à alta taxa de conversão de decisores C-Level nas praças de Caruaru/PE e Campinas/SP.
+            </div>
+
+            <!-- TABELA DE GOVERNANÇA DE CAMPANHAS REGIONAIS -->
+            <div class="panel-card slds-m-bottom_medium">
+                <h3 class="section-heading slds-m-bottom_small">📊 Desempenho e Governança de Campanhas Regionais (`Campanha_Regional__c`)</h3>
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                    <thead>
+                        <tr>
+                            <th>Campanha Regional</th>
+                            <th>Praça / UF</th>
+                            <th>Canal</th>
+                            <th>Status</th>
+                            <th>Alçada de Governança</th>
+                            <th>Custo Executado</th>
+                            <th>Receita Gerada</th>
+                            <th>ROI Real (%)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={enrichedCampanhas} for:item="camp">
+                            <tr key={camp.Id}>
+                                <td><strong>{camp.Name}</strong></td>
+                                <td>{camp.regiaoNome} ({camp.uf})</td>
+                                <td><span class="channel-badge">{camp.Canal_Aquisicao__c}</span></td>
+                                <td>{camp.Status_Campanha__c}</td>
+                                <td><span class={camp.alcadaClass}>{camp.alcadaTexto}</span></td>
+                                <td>{camp.custoFormatado}</td>
+                                <td><strong>{camp.receitaFormatada}</strong></td>
+                                <td><span class="roi-badge">+{camp.ROI_Real__c}%</span></td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- TABELA DE ATINGIMENTO DE METAS REGIONAIS -->
+            <div class="panel-card">
+                <h3 class="section-heading slds-m-bottom_small">🎯 Cumprimento de Metas por Praça (`Meta_Regional__c` — Relação Master-Detail)</h3>
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                    <thead>
+                        <tr>
+                            <th>Identificação da Meta</th>
+                            <th>Campanha Vinculada</th>
+                            <th>Período</th>
+                            <th>Meta de Receita</th>
+                            <th>Receita Atingida</th>
+                            <th>Atingimento (%)</th>
+                            <th>Farol da Meta (Fórmula)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={enrichedMetas} for:item="meta">
+                            <tr key={meta.Id}>
+                                <td><strong>{meta.Name}</strong></td>
+                                <td>{meta.campanhaNome}</td>
+                                <td>{meta.Periodo_Trimestre__c}</td>
+                                <td>{meta.metaFormatada}</td>
+                                <td><strong>{meta.atingidaFormatada}</strong></td>
+                                <td><strong>{meta.Percentual_Atingimento__c}%</strong></td>
+                                <td><span class={meta.statusBadgeClass}>{meta.Status_Meta__c}</span></td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </template>
+
+        <!-- ========================================================================= -->
+        <!-- VISÃO 3: CAPTURA EM EVENTOS, VALIDADOR VIACEP (-000) & ANTI-DUPLICIDADE    -->
+        <!-- ========================================================================= -->
+        <template if:true={isCaptureView}>
+            <div class="panel-card">
+                <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center slds-m-bottom_medium">
+                    <div>
+                        <span class="eyebrow-tag">MODO EVENTO PRESENCIAL • SCREEN FLOW + SUBFLOW ANTI-DUPLICIDADE</span>
+                        <h2 class="selected-lead-title">Captura Guiada de Lead com Motor Geográfico ViaCEP</h2>
+                    </div>
+                    <div class="slds-grid slds-gutters_x-small">
+                        <div class="slds-col">
+                            <button class="btn-outline" onclick={simularCepNormal}>
+                                Testar CEP Urbano (55004-120 Caruaru)
+                            </button>
+                        </div>
+                        <div class="slds-col">
+                            <button class="btn-primary" onclick={simularCepFallback}>
+                                Testar CEP Único -000 (55125-000 Toritama)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BARRA DE PROGRESSO DO FLOW -->
+                <div class="flow-steps slds-grid slds-m-bottom_medium">
+                    <div class="flow-step step-done">1. Dados do Decisor ✓</div>
+                    <div class="flow-step step-done">2. Subflow Anti-Duplicidade (PASS) ✓</div>
+                    <div class="flow-step step-active">3. Validação Geográfica ViaCEP (-000)</div>
+                    <div class="flow-step">4. Roteamento Territorial &amp; Score</div>
+                </div>
+
+                <div class="slds-grid slds-gutters slds-wrap">
+                    <!-- BLOCO DE VALIDAÇÃO VIACEP -->
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_6-of-12">
+                        <div class="sub-box">
+                            <h3 class="section-heading slds-m-bottom_small">📍 Consulta Assíncrona API ViaCEP (`Endereco_Integrado__c`)</h3>
+
+                            <template if:true={simIsFallback}>
+                                <div class="fallback-alert slds-m-bottom_small">
+                                    <strong>⚠️ FALLBACK CEP ÚNICO DE INTERIOR (-000) ATIVADO:</strong><br/>
+                                    O CEP <strong>{simCep}</strong> pertence a município com CEP geral sem logradouro por rua. O GeoLead AI preencheu <strong>{simCidade}/{simUf}</strong> automaticamente e liberou o campo de Logradouro para digitação manual sem travar o lead!
+                                </div>
+                            </template>
+                            <template if:false={simIsFallback}>
+                                <div class="pass-alert slds-m-bottom_small">
+                                    <strong>✅ VIACEP VALIDADO AUTOMATICAMENTE (HTTP 200):</strong><br/>
+                                    Endereço urbano completo localizado e normalizado via API ViaCEP.
+                                </div>
+                            </template>
+
+                            <div class="info-grid slds-grid slds-wrap">
+                                <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                                    <span class="field-lbl">CEP Consultado</span>
+                                    <p class="field-val">{simCep}</p>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                                    <span class="field-lbl">Cidade / Estado (IBGE: {simIbge})</span>
+                                    <p class="field-val">{simCidade} - {simUf}</p>
+                                </div>
+                                <div class="slds-col slds-size_1-of-1 slds-p-around_x-small">
+                                    <span class="field-lbl">Logradouro ({simModoRua})</span>
+                                    <p class="field-val">{simLogradouro}</p>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                                    <span class="field-lbl">Bairro / Polo</span>
+                                    <p class="field-val">{simBairro}</p>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                                    <span class="field-lbl">Flag `CEP_Unico_Interior__c`</span>
+                                    <p class="field-val">{simFlagTexto}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BLOCO DE SUBFLOW ANTI-DUPLICIDADE E ROTEAMENTO -->
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_6-of-12">
+                        <div class="sub-box">
+                            <h3 class="section-heading slds-m-bottom_small">🛡️ Subflow Anti-Duplicidade &amp; Roteamento Territorial</h3>
+
+                            <div class="pass-alert slds-m-bottom_small">
+                                <strong>✔ SUBFLOW ANTI-DUPLICIDADE: [PASS - LEAD 100% NOVO]</strong><br/>
+                                Nenhum registro conflitante encontrado para o CNPJ Raiz e E-mail informados na base.
+                            </div>
+
+                            <div class="info-grid slds-grid slds-wrap">
+                                <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                                    <span class="field-lbl">Região Comercial Identificada</span>
+                                    <p class="field-val">Polo Industrial Agreste - PE</p>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                                    <span class="field-lbl">Fila Omnichannel Destino</span>
+                                    <p class="field-val">Fila SDR Nordeste I</p>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                                    <span class="field-lbl">Lead Score Calculado</span>
+                                    <p class="field-val">89 / 100 pts [QUENTE]</p>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                                    <span class="field-lbl">Meta de SLA 1º Contato</span>
+                                    <p class="field-val">&lt; 15 minutos (Transbordo em 30m)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+    </div>
+</template>

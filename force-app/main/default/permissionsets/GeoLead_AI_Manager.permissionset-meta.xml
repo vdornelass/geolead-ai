@@ -4,6 +4,10 @@
         <application>GeoLead_AI</application>
         <visible>true</visible>
     </applicationVisibilities>
+    <classAccesses>
+        <apexClass>GeoLeadCockpitController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
     <description>Concede acesso completo ao aplicativo GeoLead AI, seus 7 objetos customizados, campos, relacionamentos e abas.</description>
     <fieldPermissions>
         <editable>true</editable>
@@ -436,6 +440,10 @@
     </tabSettings>
     <tabSettings>
         <tab>Meta_Regional__c</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+    <tabSettings>
+        <tab>Cockpit_GeoLead_AI</tab>
         <visibility>Visible</visibility>
     </tabSettings>
 </PermissionSet>

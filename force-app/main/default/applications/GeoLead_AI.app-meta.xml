@@ -12,7 +12,7 @@
     <isNavTabPersistenceDisabled>false</isNavTabPersistenceDisabled>
     <label>GeoLead AI</label>
     <navType>Standard</navType>
-    <tabs>standard-home</tabs>
+    <tabs>Cockpit_GeoLead_AI</tabs>
     <tabs>Regiao_Comercial__c</tabs>
     <tabs>Campanha_Regional__c</tabs>
     <tabs>Interesse_Captado__c</tabs>
