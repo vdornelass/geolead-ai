@@ -3,7 +3,7 @@
     <fullName>Percentual_Atingimento__c</fullName>
     <description>Percentual de cumprimento da meta de receita.</description>
     <externalId>false</externalId>
-    <formula>IF(Meta_Receita__c > 0, Receita_Atingida__c / Meta_Receita__c, 0)</formula>
+    <formula>IF(Meta_Receita__c &gt; 0, Receita_Atingida__c / Meta_Receita__c, 0)</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>Atingimento Financeiro (%)</label>
     <precision>18</precision>

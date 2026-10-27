@@ -13,9 +13,9 @@
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
-                <fullName>P1 - Atendimento Imediato (<15 min)</fullName>
+                <fullName>P1 - Atendimento Imediato (&lt;15 min)</fullName>
                 <default>true</default>
-                <label>P1 - Atendimento Imediato (<15 min)</label>
+                <label>P1 - Atendimento Imediato (&lt;15 min)</label>
             </value>
             <value>
                 <fullName>P2 - Prioridade Padrão (15-30 min)</fullName>

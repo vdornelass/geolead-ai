@@ -53,7 +53,6 @@
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
-    <gender>Feminine</gender>
     <label>Campanha Regional</label>
     <nameField>
         <label>Nome da Campanha</label>

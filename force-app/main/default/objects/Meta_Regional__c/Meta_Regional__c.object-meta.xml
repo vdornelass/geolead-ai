@@ -53,7 +53,6 @@
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
-    <gender>Feminine</gender>
     <label>Meta Regional</label>
     <nameField>
         <label>Identificação da Meta</label>
