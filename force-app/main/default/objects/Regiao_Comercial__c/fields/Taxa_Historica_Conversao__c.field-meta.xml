@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Taxa_Historica_Conversao__c</fullName>
+    <description>Taxa histórica da praça que compõe 30% do Lead Score.</description>
+    <externalId>false</externalId>
+    <label>Taxa Histórica de Conversão (%)</label>
+    <precision>5</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Percent</type>
+</CustomField>

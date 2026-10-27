@@ -6,3 +6,5 @@ package.xml
 **/.vscode
 **/.sf
 **/.sfdx
+**/jsconfig.json
+**/.eslintrc.json

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ROI_Real__c</fullName>
+    <description>Retorno sobre o investimento real da campanha regional.</description>
+    <externalId>false</externalId>
+    <formula>IF(Custo_Real_Executado__c > 0, (Receita_Gerada__c - Custo_Real_Executado__c) / Custo_Real_Executado__c, 0)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>ROI Real (%)</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Percent</type>
+</CustomField>

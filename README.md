@@ -1,5 +1,9 @@
 # GeoLead AI — Gestão Inteligente de Campanhas e Leads Regionais
 
+<p align="center">
+  <img src="docs/images/geolead_ai_logo.jpg" alt="Logomarca Oficial GeoLead AI" width="520" />
+</p>
+
 [![Salesforce](https://img.shields.io/badge/Salesforce-Enterprise%20CRM-00A1E0?logo=salesforce&logoColor=white)](https://salesforce.com)
 [![Apex](https://img.shields.io/badge/Back--End-Apex%20%26%20Triggers-1798c1)](https://developer.salesforce.com)
 [![LWC](https://img.shields.io/badge/Front--End-Lightning%20Web%20Components-0176D3)](https://developer.salesforce.com)

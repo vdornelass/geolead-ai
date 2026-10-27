@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Campanha_Regional__c</fullName>
+    <description>Campanha de marketing que originou este lead.</description>
+    <externalId>false</externalId>
+    <label>Campanha Regional</label>
+    <referenceTo>Campanha_Regional__c</referenceTo>
+    <relationshipLabel>Interesses Captados</relationshipLabel>
+    <relationshipName>Interesses_Captados</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>true</reparentableMasterDetail>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

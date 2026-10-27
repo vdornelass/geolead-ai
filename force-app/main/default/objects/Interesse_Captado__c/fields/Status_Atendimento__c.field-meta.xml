@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status_Atendimento__c</fullName>
+    <description>Estágio operacional do lead na fila.</description>
+    <externalId>false</externalId>
+    <label>Status de Atendimento</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Novo - Aguardando SDR</fullName>
+                <default>true</default>
+                <label>Novo - Aguardando SDR</label>
+            </value>
+            <value>
+                <fullName>Em Atendimento</fullName>
+                <default>false</default>
+                <label>Em Atendimento</label>
+            </value>
+            <value>
+                <fullName>Qualificado</fullName>
+                <default>false</default>
+                <label>Qualificado</label>
+            </value>
+            <value>
+                <fullName>Convertido</fullName>
+                <default>false</default>
+                <label>Convertido</label>
+            </value>
+            <value>
+                <fullName>Transbordado por SLA</fullName>
+                <default>false</default>
+                <label>Transbordado por SLA</label>
+            </value>
+            <value>
+                <fullName>Descartado</fullName>
+                <default>false</default>
+                <label>Descartado</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

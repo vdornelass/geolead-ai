@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status_Meta__c</fullName>
+    <description>Farol executivo de cumprimento da meta regional.</description>
+    <externalId>false</externalId>
+    <formula>IF(Percentual_Atingimento__c >= 1.0, "META ATINGIDA", IF(Percentual_Atingimento__c >= 0.7, "EM ANDAMENTO", "EM RISCO"))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Status da Meta</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

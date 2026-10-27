@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Vendedor_Responsavel__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Operador comercial que realizou o atendimento e conversão.</description>
+    <externalId>false</externalId>
+    <label>Vendedor Responsável (SDR)</label>
+    <referenceTo>User</referenceTo>
+    <relationshipLabel>Conversões Realizadas</relationshipLabel>
+    <relationshipName>Conversoes_Realizadas</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>
